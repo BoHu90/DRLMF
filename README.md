@@ -5,6 +5,7 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 
 ## Usages
 ### Training on VQA databases
+
 1. Extract frames from a video.
 ```
 python ./extract_frame.py
