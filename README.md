@@ -7,9 +7,13 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 
 ### Download databases
 [MWV](https://github.com/BoHu90/MWV)
+
 [LSVQ](https://github.com/baidut/PatchVQ)
+
 [KoNViD-1k](http://database.mmsp-kn.de/konvid-1k-database.html)
+
 [CVD2014](https://qualinet.github.io/databases/video/cvd2014_video_database/)
+
 [Live-vqc](https://live.ece.utexas.edu/research/LIVEVQC/index.html)
 
 ### Test the model
