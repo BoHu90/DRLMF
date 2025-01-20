@@ -10,11 +10,13 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 ```
 python ./extract_frame.py
 ```
-2.Crop video frames.
+
+2. Crop video frames.
 ```
 python ./Split_frame.py
 ```
-3.training on MWV and other datasets
+
+3. training on MWV and other datasets
 ```
 python ./DRLMF_*.py
 ```
