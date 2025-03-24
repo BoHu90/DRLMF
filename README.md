@@ -17,7 +17,9 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 [Live-vqc](https://live.ece.utexas.edu/research/LIVEVQC/index.html)
 
 ### Test the model
-You can download the trained model via [Google Drive](https://drive.google.com/drive/my-drive?dmr=1&ec=wgc-drive-globalnav-goto).
+You can download the trained model via [Baidu Drive](https://drive.google.com/drive/my-drive?dmr=1&ec=wgc-drive-globalnav-goto).
+
+The extracted VideoMAEv2 features are stored on Baidu Cloud.
 ### Training on VQA databases
 
 1. Extract frames from a video.
@@ -30,7 +32,7 @@ python -u extract_frame.py >> logs/extract_frame.log
 python -u Split_frame.py >> logs/Split_frame.log
 ```
 
-3. Extract motion feature from VideoMAWv2.
+3. Extract motion feature from VideoMAEv2.
    Path: DRLMF/VideoMAEv2-master/extract_tad_feature.py
 ```
 python -u extract_tad_feature.py >> logs/extract_tad_feature.log
