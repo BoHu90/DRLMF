@@ -15,7 +15,6 @@ pandas
 matplotlib
 torchvision
 torchvideo
-
 ```
 
 ### Download databases
