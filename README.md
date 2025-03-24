@@ -5,6 +5,19 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 
 ## Usages
 
+### Install Requirements
+```
+pytorch
+opencv
+scipy
+numpy
+pandas
+matplotlib
+torchvision
+torchvideo
+
+```
+
 ### Download databases
 [MWV](https://github.com/BoHu90/MWV)
 
