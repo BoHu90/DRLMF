@@ -17,9 +17,8 @@ Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on 
 [Live-vqc](https://live.ece.utexas.edu/research/LIVEVQC/index.html)
 
 ### Test the model
-You can download the trained model via [Baidu Drive](https://drive.google.com/drive/my-drive?dmr=1&ec=wgc-drive-globalnav-goto).
+You can download the trained model via [Baidu Drive](https://pan.baidu.com/s/1oNr0UzcS3tD5SJTksTij1Q?pwd=0421).
 
-The extracted VideoMAEv2 features are stored on Baidu Cloud.
 ### Training on VQA databases
 
 1. Extract frames from a video.
