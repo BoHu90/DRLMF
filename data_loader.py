@@ -1178,18 +1178,18 @@ class wide_VideoDataset_images_with_motion_features_and_deformation(data.Dataset
             self.video_names = dataInfo['video_name'].tolist()
             self.score = dataInfo['score'].tolist()
 
-        elif database_name == 'KoNViD-1k_train':
-            column_names = ['video_name','score']  # 将Scipy中的matlab格式的数据文件转化为python中的数据结构
-            dataInfo = pd.read_csv(filename_path, header=0, sep=',', names=column_names, index_col=False,
-                                   encoding="utf-8-sig")
-            self.video_names = dataInfo['video_name'].tolist()
-            self.score = dataInfo['score'].tolist()
-        elif database_name == 'KoNViD-1k_test':
-            column_names = ['video_name','score']  # 将Scipy中的matlab格式的数据文件转化为python中的数据结构
-            dataInfo = pd.read_csv(filename_path, header=0, sep=',', names=column_names, index_col=False,
-                                   encoding="utf-8-sig")
-            self.video_names = dataInfo['video_name'].tolist()
-            self.score = dataInfo['score'].tolist()
+        # elif database_name == 'KoNViD-1k_train':
+        #     column_names = ['video_name','score']  # 将Scipy中的matlab格式的数据文件转化为python中的数据结构
+        #     dataInfo = pd.read_csv(filename_path, header=0, sep=',', names=column_names, index_col=False,
+        #                            encoding="utf-8-sig")
+        #     self.video_names = dataInfo['video_name'].tolist()
+        #     self.score = dataInfo['score'].tolist()
+        # elif database_name == 'KoNViD-1k_test':
+        #     column_names = ['video_name','score']  # 将Scipy中的matlab格式的数据文件转化为python中的数据结构
+        #     dataInfo = pd.read_csv(filename_path, header=0, sep=',', names=column_names, index_col=False,
+        #                            encoding="utf-8-sig")
+        #     self.video_names = dataInfo['video_name'].tolist()
+        #     self.score = dataInfo['score'].tolist()
 
         elif database_name == 'youtube_ugc_train':
             column_names = ['video_names', 'scores']  # 将Scipy中的matlab格式的数据文件转化为python中的数据结构
@@ -1258,10 +1258,94 @@ class wide_VideoDataset_images_with_motion_features_and_deformation(data.Dataset
             self.video_names = dataInfo['name'].tolist()
             self.score = dataInfo['mos'].tolist()
 
+        elif database_name[:6] == 'KoNViD':
+            m = scio.loadmat(filename_path)
+            n = len(m['video_names'])
+            video_names = []
+            score = []
+            index_all = m['index'][0]
+            for i in index_all:
+                # video_names.append(dataInfo['video_names'][i][0][0])
+                # video_names.append(m['video_names'][i][0][0].split('_')[0] + '.mp4')
+                video_names.append(m['video_names'][i][0][0].split('_')[0])
+                score.append(m['scores'][i][0])
+
+            if database_name == 'KoNViD-1k':
+                self.video_names = video_names
+                self.score = score
+            else:
+                dataInfo = pd.DataFrame(video_names)
+                dataInfo['score'] = score
+                dataInfo.columns = ['file_names', 'MOS']
+                length = dataInfo.shape[0]
+                random.seed(seed)
+                np.random.seed(seed)
+                index_rd = np.random.permutation(length)
+                train_index = index_rd[0:int(length * 0.8)]
+                print(f'KoNViD-1k train_index: {train_index}')
+                # val_index = index_rd[int(length * 0.6):int(length * 0.8)]
+                # print(f'KoNViD-1k val_index: {val_index}')
+                test_index = index_rd[int(length * 0.8):]
+                print(f'KoNViD-1k test_index: {test_index}')
+                if database_name == 'KoNViD-1k_train':
+                    self.video_names = dataInfo.iloc[train_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[train_index]['MOS'].tolist()
+                # elif database_name == 'KoNViD-1k_val':
+                #     self.video_names = dataInfo.iloc[val_index]['file_names'].tolist()
+                #     self.score = dataInfo.iloc[val_index]['MOS'].tolist()
+                elif database_name == 'KoNViD-1k_test':
+                    self.video_names = dataInfo.iloc[test_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[test_index]['MOS'].tolist()
+
+        elif database_name[:7] == 'LiveVQC':
+            m = scio.loadmat(filename_path)
+            dataInfo = pd.DataFrame(m['video_list'])
+            dataInfo['MOS'] = m['mos']
+            dataInfo.columns = ['file_names', 'MOS']
+            dataInfo['file_names'] = dataInfo['file_names'].astype(str)
+            dataInfo['file_names'] = dataInfo['file_names'].str.slice(2, 10)
+            video_names = dataInfo['file_names'].tolist()
+            score = dataInfo['MOS'].tolist()
+            if database_name == 'LiveVQC':
+                self.video_names = video_names
+                self.score = score
+            else:
+                length = dataInfo.shape[0]
+                random.seed(seed)
+                np.random.seed(seed)
+                index_rd = np.random.permutation(length)
+                '''
+                train_index = index_rd[0:int(length * 0.6)]
+                print(f'LiveVQC train_index: {train_index}')
+                val_index = index_rd[int(length * 0.6):int(length * 0.8)]
+                print(f'LiveVQC val_index: {val_index}')
+                test_index = index_rd[int(length * 0.8):]
+                print(f'LiveVQC test_index: {test_index}')
+                if database_name == 'LiveVQC_train':
+                    self.video_names = dataInfo.iloc[train_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[train_index]['MOS'].tolist()
+                elif database_name == 'LiveVQC_val':
+                    self.video_names = dataInfo.iloc[val_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[val_index]['MOS'].tolist()
+                elif database_name == 'LiveVQC_test':
+                    self.video_names = dataInfo.iloc[test_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[test_index]['MOS'].tolist()
+                '''
+                train_index = index_rd[0:int(length * 0.8)]
+                print(f'LiveVQC train_index: {train_index}')
+                test_index = index_rd[int(length * 0.8):]
+                print(f'LiveVQC test_index: {test_index}')
+                if database_name == 'LiveVQC_train':
+                    self.video_names = dataInfo.iloc[train_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[train_index]['MOS'].tolist()
+                elif database_name == 'LiveVQC_test':
+                    self.video_names = dataInfo.iloc[test_index]['file_names'].tolist()
+                    self.score = dataInfo.iloc[test_index]['MOS'].tolist()
+
         elif database_name[:7] == 'CVD2014':
             file_names = []
             mos = []
-            openfile = open("/data/user/XXX/ModularBVQA/data/CVD2014_Realignment_MOS.csv", 'r', newline='')
+            openfile = open("/data/user/zhaoyimeng/ModularBVQA/data/CVD2014_Realignment_MOS.csv", 'r', newline='')
             lines = csv.DictReader(openfile, delimiter=';')
             for line in lines:
                 if len(line['File_name']) > 0:
@@ -1317,6 +1401,9 @@ class wide_VideoDataset_images_with_motion_features_and_deformation(data.Dataset
         elif self.database_name == 'LSVQ_train' or self.database_name == 'LSVQ_test' or self.database_name == 'LSVQ_test_1080p'or self.database_name[:7] == 'CVD2014':
             video_name = self.video_names[idx] + '.mp4'
             video_name_str = video_name[:-4]  # 获取文件名中字符串部分
+        elif self.database_name == 'LiveVQC_train' or self.database_name =='LiveVQC_test':
+            video_name = self.video_names[idx]
+            video_name_str = video_name[:-4]
         elif self.database_name == 'wide_angle_video_train' or self.database_name =='wide_angle_video_test':
             video_name = self.video_names[idx]
             video_name_str = video_name
@@ -1335,18 +1422,20 @@ class wide_VideoDataset_images_with_motion_features_and_deformation(data.Dataset
 
         video_height_crop = self.crop_size
         video_width_crop = self.crop_size
-        center_width = 128
-        center_height = 128
+        center_width = 96
+        center_height = 96
         block_width = 96
         block_height = 96
 
-        if self.database_name == 'KoNViD-1k_train' or self.database_name == 'KoNViD-1k_test' or self.database_name == 'LSVQ_train' or self.database_name == 'LSVQ_test' or self.database_name == 'LSVQ_test_1080p'  or self.database_name =='wide_angle_video_deformation_test' or self.database_name =='wide_angle_video_deformation_train'or self.database_name =='live_vqc_test' or self.database_name =='live_vqc_train'or self.database_name[:7] == 'CVD2014':
+        if (self.database_name == 'KoNViD-1k_train' or self.database_name == 'KoNViD-1k_test' or self.database_name == 'LSVQ_train' or self.database_name == 'LSVQ_test'
+                or self.database_name == 'LSVQ_test_1080p'  or self.database_name =='wide_angle_video_deformation_test' or self.database_name =='wide_angle_video_deformation_train'or self.database_name =='live_vqc_test'
+                or self.database_name =='live_vqc_train'or self.database_name== 'LiveVQC_train'or self.database_name== 'LiveVQC_test'or self.database_name[:7] == 'CVD2014'):
             video_length_read = 8  # 16
 
         if self.database_name == 'wide_angle_video_train' or self.database_name =='wide_angle_video_test' :
             video_length_read = 10
         elif self.database_name == 'youtube_ugc_train' or self.database_name == 'youtube_ugc_test':
-            video_length_read = 20
+            video_length_read = 8
         # video_length_read就是batch
         transformed_video = torch.zeros(
             [video_length_read, video_channel, video_height_crop, video_width_crop])  # 8*3*448*448
@@ -1364,16 +1453,17 @@ class wide_VideoDataset_images_with_motion_features_and_deformation(data.Dataset
             read_frame = self.transform(read_frame)
             transformed_video[i] = read_frame
 
+        # 返回中心的96*96，和从左下角到右上角的4块32*32
         for i in range(video_length_read):
             imge_name = os.path.join(path_frame, '{:03d}'.format(i) +'_top_left.' + '.png')
             read_frame = Image.open(imge_name)
             width, height = read_frame.size
 
             # 计算中心区域的坐标
-            start_x = (width - 128) // 2
-            start_y = (height - 128) // 2
-            end_x = start_x + 128
-            end_y = start_y + 128
+            start_x = (width - 96) // 2
+            start_y = (height - 96) // 2
+            end_x = start_x + 96
+            end_y = start_y + 96
 
             gap_X = (width - 96*4) // 3
             gap_Y = (height - 96*4) // 3
