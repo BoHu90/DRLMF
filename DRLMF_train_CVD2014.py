@@ -397,7 +397,7 @@ if __name__ == '__main__':
     # 是否冻结权重
     parser.add_argument('--freeze-layers', type=bool, default=False)
     parser.add_argument('--trained_model', type=str,
-                        default='/data/user/XXX/ckpts/DRLMF_LSVQ_plcc_NR_v0_epoch_80_SRCC_0.887008.pth')
+                        default='/data/user/XXX/ckpts/DRLMF.pth')
     # misc
     parser.add_argument('--ckpt_path', type=str, default='ckpts')   #用于存储最好的效果
     parser.add_argument('--multi_gpu', action='store_true')  # 当命令行中触发multi_gpu参数时，返回为True，没有触发的时候返回False
