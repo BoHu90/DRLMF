@@ -71,3 +71,9 @@ python ./DRLMF_*.py
  --crop_size 224 \
  >> logs/train_DRLMF_plcc_resize_256_crop_size_224_exp_version_0.log
 ```
+
+### Acknowledgement
+The basic code is partially from the below repos.
+- [ModularVQA](https://github.com/winwinwenwen77/ModularBVQA)
+- [KSVQE](https://lixinustc.github.io/projects/KVQ/)
+- [VideoMae V2](https://github.com/OpenGVLab/VideoMAEv2)
