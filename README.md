@@ -1,7 +1,7 @@
 # DRLMF
 Source codes for paper "[Blind Quality Assessment of Wide-angle Videos Based on Deformation Representation Learning and Multi-dimensional Feature Fusion]
 
-![image](https://github.com/BoHu90/DRLMF/blob/main/frame.png)
+![image](https://github.com/BoHu90/DRLMF/blob/main/DRLMF_frame.png)
 
 ## Usages
 
@@ -76,4 +76,5 @@ python ./DRLMF_*.py
 The basic code is partially from the below repos.
 - [ModularVQA](https://github.com/winwinwenwen77/ModularBVQA)
 - [KSVQE](https://lixinustc.github.io/projects/KVQ/)
+- [SimpleVQA](https://github.com/sunwei925/SimpleVQA)
 - [VideoMae V2](https://github.com/OpenGVLab/VideoMAEv2)
