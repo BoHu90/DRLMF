@@ -31,6 +31,11 @@ torchvideo
 ### Test the model
 You can download the trained model via [Baidu Drive](https://pan.baidu.com/s/1oNr0UzcS3tD5SJTksTij1Q?pwd=0421).
 
+If you want to perform inference/testing with our model, you can first download the trained weights and modify the path, then run the following script.
+```
+python -u test.py >> logs/test.log
+```
+
 ### Training on VQA databases
 
 1. Extract frames from a video.
@@ -49,7 +54,7 @@ python -u Split_frame.py >> logs/Split_frame.log
 python -u extract_tad_feature.py >> logs/extract_tad_feature.log
 ```
 
-4. training on MWV and other datasets
+4. Training on MWV and other datasets.
 ```
 python ./DRLMF_*.py
 ```
